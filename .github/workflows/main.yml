@@ -10,26 +10,41 @@ jobs:
   github-metrics:
     runs-on: ubuntu-latest
     steps:
-      - uses: lowlighter/metrics@latest
+      
+      # ======================================================================================
+      # 🖼️ TEMPLATES
+      # ======================================================================================
+      
+      - name: 📗 Classic template
+        if: ${{ success() || failure() }}
+        uses: lowlighter/metrics@latest
         with:
-          # Your GitHub token
+          filename: metrics.classic.svg
           token: ${{ secrets.METRICS_TOKEN }}
+          base: header, repositories
+          plugin_lines: yes
+          plugins_errors_fatal: ${{ github.repository == 'lowlighter/lowlighter' }}
+          output_action: pull-request
+          delay: 120
+          
+      # ======================================================================================
+      # 🧩 PLUGINS
+      # ======================================================================================          
+          
+      # ======================================================================================
+      # 📸 Website screenshot
 
-          # Options
-          user: ertlans
-          template: classic
-          base: header, activity, community, repositories, metadata
-          config_timezone: Europe/Vienna
-          plugin_gists: yes
-          plugin_introduction: yes
-          plugin_introduction_title: yes
-          plugin_reactions: yes
-          plugin_reactions_display: absolute
-          plugin_reactions_ignored: github-actions[bot], dependabot[bot], dependabot-preview[bot]
-          plugin_reactions_limit: 200
-          plugin_reactions_limit_issues: 100
+      - name: 📸 Website screenshot
+        if: ${{ success() || failure() }}
+        uses: lowlighter/metrics@master
+        with:
+          filename: metrics.plugin.screenshot.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          base: ""
           plugin_screenshot: yes
-          plugin_screenshot_background: yes
-          plugin_screenshot_selector: body
-          plugin_screenshot_title: Screenshot
-          plugin_screenshot_url: https://www.github.com
+          plugin_screenshot_title: XKCD of the day
+          plugin_screenshot_url: https://xkcd.com
+          plugin_screenshot_selector: "#comic img"
+          plugins_errors_fatal: ${{ github.repository == 'lowlighter/lowlighter' }}
+          output_action: pull-request
+          delay: 120          
