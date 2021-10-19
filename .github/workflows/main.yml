@@ -5,7 +5,7 @@ on:
   schedule: [{cron: "0 * * * *"}]
   # Lines below let you run workflow manually and on each commit
   workflow_dispatch:
-  push: {branches: ["master", "main"]}
+  push: {branches: ["main"]}
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
@@ -24,8 +24,9 @@ jobs:
           base: header, repositories
           plugin_lines: yes
           plugins_errors_fatal: ${{ github.repository == 'lowlighter/lowlighter' }}
-          output_action: pull-request
-          delay: 120
+        #  output_action: pull-request
+          output_action: commit
+        #  delay: 120
           
       # ======================================================================================
       # 🧩 PLUGINS
@@ -46,5 +47,6 @@ jobs:
           plugin_screenshot_url: https://xkcd.com
           plugin_screenshot_selector: "#comic img"
           plugins_errors_fatal: ${{ github.repository == 'lowlighter/lowlighter' }}
-          output_action: pull-request
-          delay: 120          
+         # output_action: pull-request
+          output_action: commit
+         # delay: 120          
